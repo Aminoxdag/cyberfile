@@ -9,204 +9,155 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Tajawal', sans-serif; }
-        
-        /* تأثير التدرج اللوني للأغلفة */
         .video-thumbnail {
             background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
-        
-        /* أيقونة التشغيل */
-        .play-icon {
-            transition: all 0.3s ease;
-            transform: scale(1);
-            opacity: 0.8;
-        }
-        
-        .group:hover .play-icon {
-            transform: scale(1.2);
-            opacity: 1;
-            color: #3b82f6; /* لون أزرق عند التحويم */
-        }
+        .play-icon { transition: all 0.3s ease; opacity: 0.8; }
+        .group:hover .play-icon { transform: scale(1.2); opacity: 1; color: #3b82f6; }
     </style>
 </head>
-<body class="bg-black text-gray-200 min-h-screen antialiased">
+<body class="bg-black text-gray-200 min-h-screen antialiased flex flex-col">
 
-    <!-- Navbar -->
+    <!-- الشريط العلوي -->
     <nav class="border-b border-gray-900 bg-black/80 backdrop-blur-md sticky top-0 z-40">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="text-xl font-bold tracking-wider text-white uppercase">
                 Dark<span class="text-blue-500">Popup</span>
             </div>
-            <div class="text-xs text-green-500 font-mono">Performance Mode</div>
+            <div id="count-display" class="text-xs text-gray-500 font-mono">Loading...</div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <!-- Video 1 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/IzU6/640x320', 'Riley Reid & Gabbie Carter')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <!-- أيقونة التشغيل -->
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Riley Reid & Gabbie Carter</h3>
-                </div>
-            </div>
-
-            <!-- Video 2 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/e2xi/640x320', 'Kendra Sunderland')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Kendra Sunderland</h3>
-                </div>
-            </div>
-
-            <!-- Video 3 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/gbl0/640x320', 'Video 03 (gbl0)')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Video 03 (gbl0)</h3>
-                </div>
-            </div>
-
-            <!-- Video 4 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/fawm/640x320', 'Alexa Grace')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Alexa Grace</h3>
-                </div>
-            </div>
-
-            <!-- Video 5 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/b006/640x320', 'Goldie - Brake Is Back 2')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Goldie - Brake Is Back 2</h3>
-                </div>
-            </div>
-
-            <!-- Video 6 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/jp42/640x320', 'Melissa Moore')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Melissa Moore</h3>
-                </div>
-            </div>
-
-            <!-- Video 7 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/dM94/640x320', 'Eva Lovia')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Eva Lovia</h3>
-                </div>
-            </div>
-
-            <!-- Video 8 -->
-            <div onclick="openModal('https://cyberfile.me/video/embed/mogD/640x320', 'Mia Melano, Jason Luv')" 
-                 class="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300">
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
-                </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors">Mia Melano, Jason Luv</h3>
-                </div>
-            </div>
-
+    <!-- مكان عرض الفيديوهات (سيتم ملؤه تلقائياً) -->
+    <main class="container mx-auto px-4 py-10 flex-grow">
+        <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- سيتم توليد البطاقات هنا بواسطة الكود في الأسفل -->
         </div>
     </main>
 
-    <!-- Modal (النافذة المنبثقة) -->
+    <!-- النافذة المنبثقة (Modal) -->
     <div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-sm flex items-center justify-center p-4">
-        <!-- زر الإغلاق -->
-        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-red-500 transition-colors z-50">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-red-500 z-50">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
-
         <div class="w-full max-w-5xl bg-zinc-900 rounded-xl overflow-hidden shadow-2xl border border-zinc-800 relative">
-            <!-- عنوان الفيديو داخل النافذة -->
-            <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
-                <h3 id="modalTitle" class="text-lg font-bold text-white">Video Player</h3>
-            </div>
-            
-            <!-- حاوية الفيديو -->
+            <div class="p-4 border-b border-zinc-800"><h3 id="modalTitle" class="text-lg font-bold text-white"></h3></div>
             <div class="aspect-video w-full bg-black relative">
-                <!-- رسالة انتظار -->
-                <div class="absolute inset-0 flex items-center justify-center text-gray-500">
-                    <span class="animate-pulse">Loading Video...</span>
-                </div>
-                <iframe 
-                    id="modalIframe"
-                    class="absolute inset-0 w-full h-full z-10"
-                    src="" 
-                    frameborder="0" 
-                    scrolling="no" 
-                    allowfullscreen
-                    referrerpolicy="no-referrer">
-                </iframe>
+                <iframe id="modalIframe" class="absolute inset-0 w-full h-full z-10" src="" frameborder="0" scrolling="no" allowfullscreen referrerpolicy="no-referrer"></iframe>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript للتحكم في النافذة -->
+    <!-- تذييل الصفحة -->
+    <footer class="text-center py-8 text-zinc-700 text-sm border-t border-zinc-900">
+        &copy; 2024 Private Collection
+    </footer>
+
+    <!-- ========================================== -->
+    <!--          منطقة الإعدادات (عدل هنا)          -->
+    <!-- ========================================== -->
     <script>
+        // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+        //  أضف الفيديوهات هنا فقط. انسخ السطر وعدل الرابط والاسم
+        // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+        
+        const myVideos = [
+            { 
+                title: "Riley Reid & Gabbie Carter", 
+                link: "https://cyberfile.me/video/embed/IzU6/640x320" 
+            },
+            { 
+                title: "Kendra Sunderland", 
+                link: "https://cyberfile.me/video/embed/e2xi/640x320" 
+            },
+            { 
+                title: "Video 03 (gbl0)", 
+                link: "https://cyberfile.me/video/embed/gbl0/640x320" 
+            },
+            { 
+                title: "Alexa Grace", 
+                link: "https://cyberfile.me/video/embed/fawm/640x320" 
+            },
+            { 
+                title: "Goldie - Brake Is Back 2", 
+                link: "https://cyberfile.me/video/embed/b006/640x320" 
+            },
+            { 
+                title: "Melissa Moore", 
+                link: "https://cyberfile.me/video/embed/jp42/640x320" 
+            },
+            { 
+                title: "Eva Lovia", 
+                link: "https://cyberfile.me/video/embed/dM94/640x320" 
+            },
+            { 
+                title: "Mia Melano, Jason Luv", 
+                link: "https://cyberfile.me/video/embed/mogD/640x320" 
+            },
+
+            },
+            { 
+                title: "Lana Rhoades BLACKEDraw 2018", 
+                link: "https://cyberfile.me/video/embed/chnG/640x320" 
+            },
+
+        ];
+
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+        //  لا تعدل أي شيء تحت هذا الخط
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+        // دالة لتنظيف الروابط تلقائياً (تحذف الأسماء الزائدة من الرابط لضمان عمله)
+        function cleanUrl(url) {
+            // يبحث عن نمط الرابط الأساسي ويحذف أي شيء بعد الأبعاد
+            const regex = /(https:\/\/cyberfile\.me\/video\/embed\/[a-zA-Z0-9]+\/\d+x\d+)/;
+            const match = url.match(regex);
+            return match ? match[1] : url;
+        }
+
+        // بناء المعرض تلقائياً
+        const grid = document.getElementById('gallery-grid');
+        const countDisplay = document.getElementById('count-display');
+        
+        countDisplay.innerText = `${myVideos.length} Videos`;
+
+        myVideos.forEach((video, index) => {
+            const safeLink = cleanUrl(video.link);
+            const card = document.createElement('div');
+            card.className = "group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300";
+            card.onclick = () => openModal(safeLink, video.title);
+            
+            card.innerHTML = `
+                <div class="aspect-video w-full video-thumbnail">
+                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                    </svg>
+                </div>
+                <div class="p-4 bg-zinc-900">
+                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors truncate">${video.title}</h3>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // منطق النافذة المنبثقة
         const modal = document.getElementById('videoModal');
         const modalIframe = document.getElementById('modalIframe');
         const modalTitle = document.getElementById('modalTitle');
 
         function openModal(url, title) {
-            // 1. ضع الرابط في الـ iframe
             modalIframe.src = url;
-            // 2. ضع العنوان
             modalTitle.innerText = title;
-            // 3. أظهر النافذة
             modal.classList.remove('hidden');
         }
 
         function closeModal() {
-            // 1. أخفِ النافذة
             modal.classList.add('hidden');
-            // 2. احذف الرابط من الـ iframe (مهم جداً لإيقاف الفيديو ومنع استهلاك النت)
             modalIframe.src = "";
         }
 
-        // إغلاق النافذة عند الضغط على زر ESC
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeModal();
-            }
-        });
+        document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeModal(); });
     </script>
-
-    <footer class="text-center py-8 text-zinc-700 text-sm">
-        &copy; 2024 Private Collection
-    </footer>
-
 </body>
 </html>
