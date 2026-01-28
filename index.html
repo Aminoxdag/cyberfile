@@ -7,6 +7,7 @@
     <title>My Private Collection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Tajawal', sans-serif; }
         .video-thumbnail {
@@ -15,6 +16,16 @@
         }
         .play-icon { transition: all 0.3s ease; opacity: 0.8; }
         .group:hover .play-icon { transform: scale(1.2); opacity: 1; color: #3b82f6; }
+        
+        /* تنسيق خاص للوضع العرضي */
+        :fullscreen {
+            background-color: black;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body class="bg-black text-gray-200 min-h-screen antialiased flex flex-col">
@@ -23,142 +34,180 @@
     <nav class="border-b border-gray-900 bg-black/80 backdrop-blur-md sticky top-0 z-40">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="text-xl font-bold tracking-wider text-white uppercase">
-                Dark<span class="text-blue-500">Popup</span>
+                Dark<span class="text-blue-500">Collection</span>
             </div>
             <div id="count-display" class="text-xs text-gray-500 font-mono">Loading...</div>
         </div>
     </nav>
 
-    <!-- مكان عرض الفيديوهات (سيتم ملؤه تلقائياً) -->
+    <!-- شبكة العرض -->
     <main class="container mx-auto px-4 py-10 flex-grow">
         <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- سيتم توليد البطاقات هنا بواسطة الكود في الأسفل -->
+            <!-- سيتم توليد البطاقات هنا -->
         </div>
     </main>
 
-    <!-- النافذة المنبثقة (Modal) -->
+    <!-- مشغل الفيديو المنبثق -->
     <div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-sm flex items-center justify-center p-4">
-        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-red-500 z-50">
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        
+        <!-- زر الإغلاق -->
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-white hover:text-red-500 z-[60] bg-black/50 rounded-full p-2 transition-colors">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
-        <div class="w-full max-w-5xl bg-zinc-900 rounded-xl overflow-hidden shadow-2xl border border-zinc-800 relative">
-            <div class="p-4 border-b border-zinc-800"><h3 id="modalTitle" class="text-lg font-bold text-white"></h3></div>
-            <div class="aspect-video w-full bg-black relative">
-                <iframe id="modalIframe" class="absolute inset-0 w-full h-full z-10" src="" frameborder="0" scrolling="no" allowfullscreen referrerpolicy="no-referrer"></iframe>
+
+        <div id="modalContent" class="w-full max-w-5xl bg-zinc-900 rounded-xl overflow-hidden shadow-2xl border border-zinc-800 relative flex flex-col">
+            
+            <!-- شريط الأدوات العلوي -->
+            <div class="p-3 border-b border-zinc-800 flex flex-wrap justify-between items-center bg-zinc-900 gap-2">
+                <h3 id="modalTitle" class="text-sm md:text-lg font-bold text-white truncate max-w-[150px] md:max-w-md"></h3>
+                
+                <div class="flex gap-2">
+                    <!-- زر تدوير الشاشة الجديد -->
+                    <button onclick="toggleCinemaMode()" class="text-xs bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded flex items-center gap-2 transition-colors">
+                        <i class="fas fa-expand"></i> وضع السينما
+                    </button>
+
+                    <!-- زر التحميل -->
+                    <a id="modalDownload" href="#" target="_blank" class="text-xs bg-zinc-800 hover:bg-green-600 text-white px-3 py-1.5 rounded flex items-center gap-2 transition-colors">
+                        <i class="fas fa-download"></i> تحميل
+                    </a>
+                </div>
+            </div>
+
+            <!-- حاوية الفيديو -->
+            <div class="aspect-video w-full bg-black relative flex-grow">
+                <iframe 
+                    id="modalIframe" 
+                    class="absolute inset-0 w-full h-full z-10" 
+                    src="" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    allowfullscreen 
+                    allow="autoplay; fullscreen; orientation-lock; screen-wake-lock; accelerometer; gyroscope;"
+                    referrerpolicy="no-referrer">
+                </iframe>
             </div>
         </div>
     </div>
 
-    <!-- تذييل الصفحة -->
     <footer class="text-center py-8 text-zinc-700 text-sm border-t border-zinc-900">
         &copy; 2024 Private Collection
     </footer>
 
-    <!-- ========================================== -->
-    <!--          منطقة الإعدادات (عدل هنا)          -->
-    <!-- ========================================== -->
+    <!-- إعدادات القائمة -->
     <script>
-        // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-        //  أضف الفيديوهات هنا فقط. انسخ السطر وعدل الرابط والاسم
-        // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-        
         const myVideos = [
-            { 
-                title: "Riley Reid & Gabbie Carter", 
-                link: "https://cyberfile.me/video/embed/IzU6/640x320" 
-            },
-            { 
-                title: "Kendra Sunderland", 
-                link: "https://cyberfile.me/video/embed/e2xi/640x320" 
-            },
-            { 
-                title: "Video 03 (gbl0)", 
-                link: "https://cyberfile.me/video/embed/gbl0/640x320" 
-            },
-            { 
-                title: "Alexa Grace", 
-                link: "https://cyberfile.me/video/embed/fawm/640x320" 
-            },
-            { 
-                title: "Goldie - Brake Is Back 2", 
-                link: "https://cyberfile.me/video/embed/b006/640x320" 
-            },
-            { 
-                title: "Melissa Moore", 
-                link: "https://cyberfile.me/video/embed/jp42/640x320" 
-            },
-            { 
-                title: "Eva Lovia", 
-                link: "https://cyberfile.me/video/embed/dM94/640x320" 
-            },
-            { 
-                title: "Mia Melano, Jason Luv", 
-                link: "https://cyberfile.me/video/embed/mogD/640x320" 
-
-            },
-            {
-                title: "Lana Rhoades BLACKEDraw 2018", 
-                link: "https://cyberfile.me/video/embed/chnG/640x320" 
-
-            },
-            {
-                title: "Lana Rhoades  BLACKED  Cant Stop, Wont Stop", 
-                link: "https://cyberfile.me/video/embed/vzZP/640x320" 
-            },
-
+            { title: "Riley Reid & Gabbie Carter", link: "https://cyberfile.me/video/embed/IzU6/640x320" },
+            { title: "Kendra Sunderland", link: "https://cyberfile.me/video/embed/e2xi/640x320" },
+            { title: "Video 03 (gbl0)", link: "https://cyberfile.me/video/embed/gbl0/640x320" },
+            { title: "Alexa Grace", link: "https://cyberfile.me/video/embed/fawm/640x320" },
+            { title: "Goldie - Brake Is Back 2", link: "https://cyberfile.me/video/embed/b006/640x320" },
+            { title: "Melissa Moore", link: "https://cyberfile.me/video/embed/jp42/640x320" },
+            { title: "Eva Lovia", link: "https://cyberfile.me/video/embed/dM94/640x320" },
+            { title: "Mia Melano, Jason Luv", link: "https://cyberfile.me/video/embed/mogD/640x320" },
+            { title: "Lana Rhoades BLACKEDraw 2018", link: "https://cyberfile.me/video/embed/chnG/640x320" },
+            { title: "Lana Rhoades - Cant Stop, Wont Stop", link: "https://cyberfile.me/video/embed/vzZP/640x320" },
+            { title: "Gabbie Carter - The Dutiful Wife", link: "https://cyberfile.me/video/embed/fchO/640x320" },
+            { title: "Gabbie Carter - Come Get Me", link: "https://cyberfile.me/video/embed/hZiD/640x320" },
+            { title: "Tori Black - The Big Fight", link: "https://cyberfile.me/video/embed/fcU6/640x320" },
+            { title: "AJ Applegate - BLACKED (Apr 15, 2017)", link: "https://cyberfile.me/video/embed/ckpF/640x320" },
+            { title: "Haley Reed - Fashion Week BBC", link: "https://cyberfile.me/video/embed/d9JJ/640x320" }
         ];
 
-        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-        //  لا تعدل أي شيء تحت هذا الخط
-        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+        // ---------------------------------------------------------
+        
+        function getVideoId(url) {
+            const regex = /cyberfile\.me\/video\/embed\/([a-zA-Z0-9]+)/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
 
-        // دالة لتنظيف الروابط تلقائياً (تحذف الأسماء الزائدة من الرابط لضمان عمله)
         function cleanUrl(url) {
-            // يبحث عن نمط الرابط الأساسي ويحذف أي شيء بعد الأبعاد
             const regex = /(https:\/\/cyberfile\.me\/video\/embed\/[a-zA-Z0-9]+\/\d+x\d+)/;
             const match = url.match(regex);
             return match ? match[1] : url;
         }
 
-        // بناء المعرض تلقائياً
         const grid = document.getElementById('gallery-grid');
         const countDisplay = document.getElementById('count-display');
-        
         countDisplay.innerText = `${myVideos.length} Videos`;
 
-        myVideos.forEach((video, index) => {
+        myVideos.forEach((video) => {
             const safeLink = cleanUrl(video.link);
+            const videoId = getVideoId(video.link);
+            const downloadLink = videoId ? `https://cyberfile.me/${videoId}` : '#';
+
             const card = document.createElement('div');
-            card.className = "group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300";
-            card.onclick = () => openModal(safeLink, video.title);
+            card.className = "bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 group";
             
             card.innerHTML = `
-                <div class="aspect-video w-full video-thumbnail">
-                    <svg class="w-16 h-16 text-white play-icon" fill="currentColor" viewBox="0 0 20 20">
+                <div class="aspect-video w-full video-thumbnail cursor-pointer relative" onclick="openModal('${safeLink}', '${video.title}', '${downloadLink}')">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all"></div>
+                    <svg class="w-16 h-16 text-white play-icon relative z-10" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
                     </svg>
                 </div>
-                <div class="p-4 bg-zinc-900">
-                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors truncate">${video.title}</h3>
+                
+                <div class="p-4 bg-zinc-900 flex flex-col gap-3">
+                    <h3 class="text-sm font-bold text-gray-100 group-hover:text-blue-400 transition-colors truncate" title="${video.title}">
+                        ${video.title}
+                    </h3>
+                    <div class="flex items-center justify-end border-t border-zinc-800 pt-3">
+                        <a href="${downloadLink}" target="_blank" class="text-xs bg-zinc-800 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors flex items-center gap-2 font-semibold">
+                            تحميل <i class="fas fa-download"></i>
+                        </a>
+                    </div>
                 </div>
             `;
             grid.appendChild(card);
         });
 
-        // منطق النافذة المنبثقة
+        // Modal Logic
         const modal = document.getElementById('videoModal');
+        const modalContent = document.getElementById('modalContent');
         const modalIframe = document.getElementById('modalIframe');
         const modalTitle = document.getElementById('modalTitle');
+        const modalDownload = document.getElementById('modalDownload');
 
-        function openModal(url, title) {
+        function openModal(url, title, downloadUrl) {
             modalIframe.src = url;
             modalTitle.innerText = title;
+            modalDownload.href = downloadUrl;
             modal.classList.remove('hidden');
         }
 
         function closeModal() {
             modal.classList.add('hidden');
             modalIframe.src = "";
+            // الخروج من وضع ملء الشاشة عند الإغلاق
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+            // فك قفل الدوران
+            try { if (screen.orientation) screen.orientation.unlock(); } catch(e) {}
+        }
+
+        // دالة وضع السينما (الإجبار القوي)
+        async function toggleCinemaMode() {
+            try {
+                // 1. طلب ملء الشاشة للحاوية الرئيسية
+                if (!document.fullscreenElement) {
+                    if (modalContent.requestFullscreen) {
+                        await modalContent.requestFullscreen();
+                    } else if (modalContent.webkitRequestFullscreen) { /* Safari */
+                        await modalContent.webkitRequestFullscreen();
+                    }
+                }
+
+                // 2. محاولة قفل الشاشة بالعرض (يعمل بشكل ممتاز على أندرويد)
+                if (screen.orientation && screen.orientation.lock) {
+                    await screen.orientation.lock('landscape');
+                }
+            } catch (err) {
+                console.log("Rotation lock not supported or denied by browser:", err);
+                // تنبيه بسيط للمستخدم إذا رفض المتصفح
+                // alert('يرجى تدوير الجهاز يدوياً');
+            }
         }
 
         document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeModal(); });
